@@ -8,7 +8,7 @@ class LearningAgent(Agent):
     """ An agent that learns to drive in the Smartcab world.
         This is the object you will be modifying. """ 
 
-    def __init__(self, env, learning=False, epsilon=1, alpha=0.5):
+    def __init__(self, env, learning=False, epsilon=1.0, alpha=0.5):
         super(LearningAgent, self).__init__(env)     # Set the agent in the evironment 
         self.planner = RoutePlanner(self.env, self)  # Create a route planner
         self.valid_actions = self.env.valid_actions  # The set of valid actions
@@ -45,7 +45,7 @@ class LearningAgent(Agent):
             self.alpha = 0.0
         else:
             self.trial_number += 1
-            # self.epsilon = self.epsilon - 0.05
+#            self.epsilon = self.epsilon - 0.05
             self.epsilon = 0.99**self.trial_number
             # self.epsilon = math.fabs((0.9**self.trial_number)*math.cos(0.9*self.trial_number))
             # self.epsilon = 1/(self.trial_number**2)
@@ -86,10 +86,6 @@ class LearningAgent(Agent):
         ###########
         # Calculate the maximum Q-value of all actions for a given state
 
-#        maxQ = -float('inf')
-#        for action in self.Q[state]:
-#            if self.Q[state][action] > maxQ:
-#                maxQ = self.Q[state][action]
         maxQ = max(self.Q[state].values())
 
         return maxQ 
@@ -127,7 +123,7 @@ class LearningAgent(Agent):
              action = random.choice(self.valid_actions)
         # When learning, choose a random action with 'epsilon' probability
         else:
-            if self.epsilon > random.random:
+            if self.epsilon > random.random():
                 action = random.choice(self.valid_actions)
         # Otherwise, choose an action with the highest Q-value for the current state
             else:
@@ -192,7 +188,7 @@ def run():
     # Follow the driving agent
     # Flags:
     #   enforce_deadline - set to True to enforce a deadline metric
-    env.set_primary_agent(agent, enforce_deadline = True)
+    env.set_primary_agent(agent, enforce_deadline=True)
 
     ##############
     # Create the simulation
@@ -212,6 +208,6 @@ def run():
 
 
 if __name__ == '__main__':
-    # import os
-    # os.chdir('D:\\Nano Degree\\Smart Cab\\')
+#    import os
+#    os.chdir('D:\\Nano Degree\\Smart Cab\\')
     run()
